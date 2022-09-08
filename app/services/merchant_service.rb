@@ -21,4 +21,9 @@ class MerchantService
         json = JSON.parse(response.body, symbolize_names: true)
     end
 
+     def self.find_all(search)
+        response = conn.get("/api/v1/merchants/find_all?name=#{search}") 
+        json = JSON.parse(response.body, symbolize_names: true)
+    end
+
 end 

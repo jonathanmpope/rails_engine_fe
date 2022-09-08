@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "merchants index page", type: :feature do
-    it 'has a list of merchants' do
+    scenario 'has a list of merchants', :vcr do
         visit "/merchants"
         
         expect(page).to have_content("Merchants")
@@ -9,7 +9,7 @@ RSpec.describe "merchants index page", type: :feature do
         expect(page).to have_content("Klein, Rempel and Jones")
     end 
 
-    it 'each merchant name is a link to a show page' do
+    scenario 'each merchant name is a link to a show page', :vcr do
         visit "/merchants"
 
         expect(page).to have_content("Schroeder-Jerde")
@@ -21,7 +21,7 @@ RSpec.describe "merchants index page", type: :feature do
         expect(page).to have_content("Schroeder-Jerde")
     end
     
-    it 'each merchant show page has a list of items they sell' do
+    scenario 'each merchant show page has a list of items they sell', :vcr do
         visit "/merchants/1"
 
         expect(page).to have_content("Items this merchant sells")
@@ -35,7 +35,7 @@ RSpec.describe "merchants index page", type: :feature do
         expect(page).to have_content("Item Provident At")
     end
 
-    it 'has a list of items' do
+    scenario 'has a list of items', :vcr do
         visit "/items"
         
         expect(page).to have_content("Items")
@@ -43,7 +43,7 @@ RSpec.describe "merchants index page", type: :feature do
         expect(page).to have_content("Item Expedita Aliquam")
     end 
 
-    it 'has a link to each item show page' do
+    it 'has a link to each item show page', :vcr do
         visit "/items"
         
         expect(page).to have_content("Items")
@@ -52,5 +52,16 @@ RSpec.describe "merchants index page", type: :feature do
         click_on("Item Nemo Facere")
 
         expect(current_path).to eq("/items/4")
-    end 
+    end
+    
+    scenario 'has a search api feature for merchants', :vcr do
+        visit "/merchants"
+        
+        fill_in "search", with: "Jerde"
+        click_button("Search")
+
+        expect(page).to have_content("Schroeder-Jerde")
+        expect(page).to have_content("Koch, Wolf and Jerde")
+        expect(page).to have_content("Rice, Jerde and White")
+    end
 end 
